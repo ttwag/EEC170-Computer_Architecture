@@ -19,7 +19,9 @@ add a, a, e
 | 32 Registers| x0 - x31 | Data must be in registers to perform arithmetics. Register x0 always equals 0. |
 | $2^{30}$ memory words | Memory[0], Memory[4], .... | Accessed only by data transfer instructions. RISC-V uses byte addresses, so sequential word addresses differ by 4. |
 <br>
+
 ## RISC-V Assembly Language
+
 | Category | Instruction | Example | Meaning | Comments |
 | -------- | ----------- | ------- | ------- | -------- |
 | Arithmetic | Add | add x5, x6, x7 | x5 = x6 + x7 | Three register operands; add |
