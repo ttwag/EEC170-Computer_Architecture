@@ -1,4 +1,18 @@
 # Chapter 2 -  Instructions: Language of the Computer
+## Inside the Computer
+* **CPU**
+    * **Program Counter (PC)**: Pointer to the next instruction to execute.
+    * **Arithmetic Unit (ALU)**: adder, shift, multiply
+    * **Register File**: array of registers (small lcoal fast memory). Each is 32 bits X0,...,X31. It's implemented by D-Flipflop
+* **Memory**
+    * Each memory block has an address and data, and we use **byte-addressing**. Each index is 1 byte.
+    * 32 bit quantity is called **WORD**. In word addressing, each index represents 4 byte.
+    * 1 WORD has 4 bytes.
+    * **Big Endian Notation**: MSB of data in least significant address.
+    * **Little Endian Notation**: MSB of data in most significant address.
+
+
+## Instruction Set
 **Instruction set**: the vocabulary of commands understood by a given architecture.
 <br><br>
 Each RISC-V arithmetic instruction performs only one operation and must always have exactly three variables. <br>
@@ -11,8 +25,13 @@ add a, a, d //d is added to a
 add a, a, e
 ```
 
-## 2.3 -  RISC-V Operands<br>
-**Operands** in assembly language is the data or memory location used to execute the instruction.
+### 2.3 -  RISC-V Operands<br>
+* **Operands** in assembly language is the data or memory location used to execute the instruction.
+* **Opcode**: What to do?
+* **Source**: What should I do it on.
+* **Destination**: Where to put the results.
+* Arithmetic operations use register operands.
+* RISC-V's memory is little Endian.
 
 | Name | Example | Comments |
 | ---- | :------:| -------- |
@@ -20,7 +39,7 @@ add a, a, e
 | $2^{30}$ memory words | Memory[0], Memory[4], .... | Accessed only by data transfer instructions. RISC-V uses byte addresses, so sequential word addresses differ by 4. |
 <br>
 
-## RISC-V Assembly Language
+### RISC-V Assembly Language
 
 | Category | Instruction | Example | Meaning | Comments |
 | -------- | ----------- | ------- | ------- | -------- |
@@ -100,6 +119,7 @@ sub x19, x5, x6
 g = h + A[8]
 
 // RISC-V 
+// A[i]'s address = Base Address + i * 4
 lw x9, 32(x22) //x9 as temp register
 add x20, x21, x9 
 ```
