@@ -50,14 +50,14 @@ add a, a, e
 | | Load word, unsigned | lwu x5, 40(x6) | x5 = Memory[x6 + 40] | Unsigned word from memory to register |
 | | Store word | sw x5, 40(x6) | Memory[x6 + 40] = x5 | Word from register to memory |
 | | Load halfword | lh x5, 40(x6) | x5 = Memory[x6 + 40] | Halfword from memory to register |
-| | Load halfword, unsigned |
-| | Store halfword | 
-| | Load byte |
-| | Load byte, unsigned |
-| | Store byte | 
-| | Load reserved | 
-| | Store conditional | 
-| | Load upper immediate | 
+| | Load halfword, unsigned | lhu x5, 40(x6) | x5 = Memory[x6 + 40] | Unsigned halfword from memory to register |
+| | Store halfword | sh x5, 40(x6) | Memory[x6 + 40] = x5 | Halfword from register to memory |
+| | Load byte | lb x5, 40(x6) | x5 = Memory[x6 + 40] | lb x5, 40(x6) | x5 = Memory[x6 + 40] | Byte from memory to register |
+| | Load byte, unsigned | lbu x5, 40(x6) | x5 = Memory[x6 + 40] | Byte unsigned from memory to register |
+| | Store byte | sb x5, 40(x6) | Memory[x6 + 40] = x5 | Byte from register to memory |
+| | Load reserved | lr.d x5, (x6) | x5 = Memory[x6] | Load; 1st half of atomic swap |
+| | Store conditional | sc.d x7, x5, (x6) | Memory[x6] = x5; x7 = 0/1 | Store;2nd hald of atomic swap |
+| | Load upper immediate | lui x5, 0x12345 | x5 = 0x12345000 | Loads 20-bit constant shifted left 12 bits |
 | Logical | And | and x5, x6, x7 | x5 = x6 & x7 | Three reg. operands; bit-by-bit AND |
 | | Inclusive or | or x5, x6, x8 | x5 = x6 \| x8 | Three reg. operands; bit-by-bit OR |
 | | Exclusive or | xor x5, x6, x9 | x5 = x6 ^ x9 | Three reg. operands; bit-by-bit XOR |
@@ -137,11 +137,83 @@ add x21, x21, x9
 sw x21, 48(x22)     // Stores the numbers back into A[12]
 ```
 ## 2.4 - Signed and Unsigned Numbers
-* We'll use **Two's Complement**.
-* If the most significant bit is 0, the number is positive. Otherwise, it's negative. The number overflows if it doesn't match this pattern.
-* To go from a positive number x to its negative counterpart, negate x bit-by-bit and add 1. This comes from the fact that all 1's in two's complement is -1, so $x + \bar{x} = -1$ and $\bar{x} + 1 = -x$.
+We'll use **Two's Complement**.
+Given an n-bit number, 
+$$ x = -x_{n-1} 2^{n-1} + x_{n-2}2^{n-2}+...+x_12^{1}+x_02^{0}$$
+If the most significant bit is 0, the number is positive. Otherwise, it's negative. **The number overflows if it doesn't match this pattern.**
+
+To go from a positive number x to its negative counterpart, negate x bit-by-bit and add 1. This comes from the fact that a binary with all 1's in two's complement is -1, so $$x + \bar{x} = -1$$ and $$\bar{x} + 1 = -x$$
+
+Range of Representation = $$(-2^{n-1}, 2^{n-1}-1)$$
+
+## Floating Point Value
+Represent finite number of bits with approximation. More bits after decimal point increases precision.
+
 
 ## 2.5 - Representing Instructions in the Computer
 * An instruction could be represented by a 32 bit number.
 * **Instruction format**: a form of representation of an instruction composed of fields of binary numbers.
+* RISC-V Instruction fields
+    * **opcode (7-bits)**: basic operation of the instruction.
+    * **rd (5-bits)**: the register destination operand.
+    * **funct3 (3-bits)**: additional opcode field.
+    * **rs1 (5-bits)**: first register source operand.
+    * **rs2 (5-bits)**: second register source operand.
+    * **funct7 (7-bits)**: additional opcode field.
+* There are many instruction formats in RISC-V
 
+## 2.6 Logical Operations
+* Shift right logical: fill the vacant bits with zero.
+* Shift right arithmetic: fill the vacant bits with copies of old sign bit.
+
+## Conditional Operations
+Branch to a labeled instruction if a condition is true. Otherwise, continue sequentially.
+```
+//if (rs1 == rs2) branch to instruction labeled L1
+beq rs1, rs2, L1
+
+//if (rs1 != rs2) branch to instruction labeled L1
+bne rs1, rs2, L1
+
+//if (rs1 < rs2) branch to instruction L1
+blt rs1, rs2, L1
+
+//if (rs1 >= rs2) branch to instruction labeled L1
+bge rs1, rs2, L1
+```
+
+
+## Loops
+```
+// C code
+while (save[i] == k) i+=1;
+
+// Compiled RISC-V code with i in x22, k in x24, address of save in x25
+Loop:
+    slli x10, x22, 2 //Bit shift for 4 bytes
+    add x10, x10, x25
+    lw x9, 0(x10)
+    bne x9, x24, Exit
+    addi x22, x22, 1
+    beq x0, x0, Loop
+Exit:
+
+```
+## Signed vs. Unsigned
+* Signed comparison: <small>blt</small>, <small>bge</small>
+* Unsigned comparison: <small>bltu</small>, <small>bgeu</small>
+
+## Procedure (Function)
+### Basic Ideas
+* Jump-and-link instruction: an instruction that branches to an address and simultaneously saves the address of the following instruction in a register (usually x1).
+* x10 - x17: eight parameter registers in which to pass parameters or return values
+* x1: one return address register to return to the point of origin after the procedural call.
+* The link stored in register x1 is called the **return address**
+* The jump-and-link intstruction (jalr) branches to the address stored in register x1. 
+The calling program (**caller**) puts the parameter values in x10 to x17 and uses jal x1, X to branch to procedure X (**callee**). The callee then performs the calculations, places the results in the same parameter registers, and return control to the caller using jalr x0, 0(x1).
+* We need a register to hold the address of the current instruction being executed. This register is called the **program counter (PC)**. The jal instruction saves PC+4 in its designation register (usually x1 is the PC and 4 is 4 bytes)
+
+### Using more Registers with Stack
+A stack needs a pointer to the most recently allocated address in the stack to show where the next procedure should place the registers to be spilled or where old register values are found. 
+
+The **stack pointer** is register x2, also known by the name sp.

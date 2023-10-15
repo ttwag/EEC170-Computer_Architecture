@@ -71,3 +71,46 @@ exit:
     addi a0, zero, 10
     ecall
 ```
+
+## Put Integer into a Register
+
+
+
+
+## If Statement
+```
+//C code
+if (i == j) x; else !x;
+
+// RISC-V
+bne x22, 23, Else // go to Else if i != j
+x             // if i == j, X
+beq x0, x0, Exit //Unconditional branch
+Else: !x     //Else branch i != j
+Exit:
+```
+## While Loops
+```
+// C while loop
+while (save[i] == k)
+        i += 1;
+
+// RISC-V, assuming i and k corresponds to x22 and x24. x25 stores array save's address
+
+Loop: slli x10, x22, 2   //Temp reg x10 = i * 4
+add x10, x10, x25       //x10 = address of save[i]
+lw  x9, 0(x10)          //Temp reg x9 = save[i]
+bne x9, x24, Exit       //go to Exit if save[i] != k
+addi x22, x22, 1        //i = i + 1
+beq x0, x0, Loop        //go to Loop
+Exit: 
+```
+
+## Procedure
+Jump-and-link instruction
+```
+jal x1, ProcedureAddress        //jump to ProcedureAddress and write return address to x1
+```
+
+
+
