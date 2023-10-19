@@ -1,6 +1,6 @@
 #include <iostream>
 #include <iomanip>
-
+//Setting Even or Odd Parity
 int parity(int num, int i) {
     int ans = num, k = 1, bit = 0;
     while (k <= 15) {
@@ -14,9 +14,22 @@ int parity(int num, int i) {
     return ans;
 }
 
+
+// Bit Manipulation
+int BitManip(unsigned int A, unsigned int B) {
+    unsigned int x = 0x3f;
+    unsigned int y = x;
+    x = x << 10;
+    x = A & x;
+    y = y << 26;
+    y = !y;
+    B = B & y;
+    x = x << 15;
+    B = B | x;
+    return B;
+}
 int main() {
-    int num = 0x00000FFF;
-    num = parity(num, 1);
-    std::cout<<std::hex<<num<<std::endl;
+    unsigned int A = 0x0, B = 0xffffffff;
+    std::cout<<std::hex<<BitManip(A, B);
     return 0;
 }

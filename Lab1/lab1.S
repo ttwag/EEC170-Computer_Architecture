@@ -96,6 +96,25 @@ main:                               # There should be one main
     li a0, 4
     ecall
 
+    add x5, x0, x0
+    li x6, 0xffffffff
+    li x7, 0x3f
+    add x28, x7, x0
+    slli x7, x7, 10
+    and x7, x7, x5
+    slli x28, x28, 26
+    not x28, x28
+    and x6, x6, x28
+    slli x7, x7, 15
+    or x6, x6, x7
+
+    add a1, x6, x0
+    li a0, 1
+    ecall
+
+    la a1, newln
+    li a0, 4
+    ecall
 # this is a system call to exit the program gracefully. The code is 10 in register a0. Nothing is required in a1.
 exit:
     addi a0, zero, 10 

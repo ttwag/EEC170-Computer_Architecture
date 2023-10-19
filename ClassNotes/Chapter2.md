@@ -170,7 +170,7 @@ Represent finite number of bits with approximation. More bits after decimal poin
 Branch to a labeled instruction if a condition is true. Otherwise, continue sequentially.
 ```
 //if (rs1 == rs2) branch to instruction labeled L1
-beq rs1, rs2, L1
+beq rs1, rs2, L1  //L1 add to the program counter to jump to another line.
 
 //if (rs1 != rs2) branch to instruction labeled L1
 bne rs1, rs2, L1
@@ -181,7 +181,9 @@ blt rs1, rs2, L1
 //if (rs1 >= rs2) branch to instruction labeled L1
 bge rs1, rs2, L1
 ```
-
+### Signed vs. Unsigned
+* Signed comparison: <small>blt</small>, <small>bge</small>
+* Unsigned comparison: <small>bltu</small>, <small>bgeu</small>
 
 ## Loops
 ```
@@ -195,17 +197,14 @@ Loop:
     lw x9, 0(x10)
     bne x9, x24, Exit
     addi x22, x22, 1
-    beq x0, x0, Loop
+    beq x0, x0, Loop   // or j Loop
 Exit:
 
 ```
-## Signed vs. Unsigned
-* Signed comparison: <small>blt</small>, <small>bge</small>
-* Unsigned comparison: <small>bltu</small>, <small>bgeu</small>
 
 ## Procedure (Function)
 ### Basic Ideas
-* Jump-and-link instruction: an instruction that branches to an address and simultaneously saves the address of the following instruction in a register (usually x1).
+* Jump-and-link instruction: an instruction that branches to an address and simultaneously saves the address of the following instruction in a register (**usually x1**).
 * x10 - x17: eight parameter registers in which to pass parameters or return values
 * x1: one return address register to return to the point of origin after the procedural call.
 * The link stored in register x1 is called the **return address**
@@ -213,7 +212,36 @@ Exit:
 The calling program (**caller**) puts the parameter values in x10 to x17 and uses jal x1, X to branch to procedure X (**callee**). The callee then performs the calculations, places the results in the same parameter registers, and return control to the caller using jalr x0, 0(x1).
 * We need a register to hold the address of the current instruction being executed. This register is called the **program counter (PC)**. The jal instruction saves PC+4 in its designation register (usually x1 is the PC and 4 is 4 bytes)
 
+```
+jal x0, function_label #branch to function_label
+```
+
 ### Using more Registers with Stack
 A stack needs a pointer to the most recently allocated address in the stack to show where the next procedure should place the registers to be spilled or where old register values are found. 
 
 The **stack pointer** is register x2, also known by the name sp.
+
+If I am going into a another function and want to save the contents in register x5,x6, and x20, then I could do:
+
+```
+addi sp, sp, -12    //expand stack for 3 integers
+
+sw x5, 8(sp)    //save x5 for use afterwards
+
+sw x6, 4(sp)    //save x6 for use afterward
+
+sw x20, 0(sp)   //save x20 for use afterwards
+```
+
+Before returning from the function, we restore the three old values of the registers we saved by stack.pop()
+
+```
+lw x20, 0(sp)   //restore x20 for caller
+
+lw x6, 4(sp)    //restore x6 for caller
+
+lw x5, 8(sp)    //restore x5 for caller
+addi sp, sp, 12 //adjust stack to delete 3 items
+
+jalr x0, 0(x1)  //branch back to calling function
+```
