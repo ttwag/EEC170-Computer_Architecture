@@ -62,3 +62,19 @@ The branch instruction operates by adding the PC with the 12 bits of the instruc
 
 **Control Unit**
 ![Figure13](./images/Figure13.png)
+
+## Exercise
+![Figure14](./images/Figure14.png)
+
+### Data Path
+![Figure15](./images/Figure15.png)
+
+### Waveform
+![Figure16](./images/Figure16.png)
+
+### Latency
+* R-Type Instruction = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Mux (25 ps) + Register Setup (20 ps) = 700 ps
+* lw (load word) = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + D-Mem (250 ps) + Mux (25 ps) + Register Setup (20 ps) = 950 ps
+* sw (store word) = Register read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + D-Mem (250 ps) = 905 ps
+* Branch = Register read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Single gate (5 ps) + Mux (25 ps) + Register Setup (20 ps) = 705 ps
+* Arithmetic, logical, shift I-type instruction = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Mux (25 ps) + Register Setup (20 ps) = 700 ps
