@@ -2,8 +2,8 @@
 
 int main() {
     // X and Y to be multiplied, ans is their product.
-    int16_t x = 0xC0A0;
-    int16_t y = 0x4053;
+    int16_t x = 0x3F0;
+    int16_t y = 0x40A8;
 
     //Processed X's Mantissa as mant1
     int16_t mant1 = (0x7F & x) | (1 << 7);

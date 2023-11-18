@@ -20,8 +20,8 @@ newln:    .string "\n"
 
 # X and Y are the inputs
 
-X:  .word  0x4020
-Y:  .word  0x40A8
+X:  .word  0x
+Y:  .word  0xC0A0
 
 
 # .text means the rest of the stuff is a program or instructions to the computer

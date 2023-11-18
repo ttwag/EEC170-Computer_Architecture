@@ -1,9 +1,4 @@
-# Floating Point Numbers in Binary
-To convert a binary floating point number to decimal, we could do the usual thing of multiplying 2 to the power of bit position times 1 or 0. Now positions after the dot will start from -1 to -infinity.
-
-$(101.101)_2 = 5.625$
-
-Some floating point decimal numbers can only be approximated by binary.
+# Chapter 3 - Arithmetic in Computer
 
 EX: $(0.2)_{10} = (0.001100110011\dots)_{2}$
 
