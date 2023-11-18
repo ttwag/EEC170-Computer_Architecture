@@ -36,6 +36,7 @@ All signals must propagate from state element 1, through the combinational logic
 ## Datapath
 * Datapath Element: a unit used to operate on or hold data within a procesor. EX: instruction, data memory, register file, ALU, and adder.
 
+### PC
 ![Figure6](./images/Figure6.png)
 
 * A register file is a collection of registers in which any register can be read or written by specifying the number of the register in the file.
@@ -52,3 +53,12 @@ The branch instruction operates by adding the PC with the 12 bits of the instruc
 
 ### Branch
 ![Figure9](./images/Figure9.png)
+
+### Data Path for R-Type Instruction
+![Figure11](./images/Figure11.png)
+
+**ALU Control Inputs**
+![Figure12](./images/Figure12.png)
+
+**Control Unit**
+![Figure13](./images/Figure13.png)
