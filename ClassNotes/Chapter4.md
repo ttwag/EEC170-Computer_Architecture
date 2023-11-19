@@ -72,9 +72,37 @@ The branch instruction operates by adding the PC with the 12 bits of the instruc
 ### Waveform
 ![Figure16](./images/Figure16.png)
 
-### Latency
+### Latency and Clock Period
 * R-Type Instruction = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Mux (25 ps) + Register Setup (20 ps) = 700 ps
 * lw (load word) = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + D-Mem (250 ps) + Mux (25 ps) + Register Setup (20 ps) = 950 ps
 * sw (store word) = Register read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + D-Mem (250 ps) = 905 ps
 * Branch = Register read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Single gate (5 ps) + Mux (25 ps) + Register Setup (20 ps) = 705 ps
 * Arithmetic, logical, shift I-type instruction = Register Read (30 ps) + I-Mem (250 ps) + Register File (150 ps) + Mux (25 ps) + ALU (200 ps) + Mux (25 ps) + Register Setup (20 ps) = 700 ps
+
+## Pipelining
+On the data path example above, the longest path in the CPU determines the clock cycle, which is likely a load instruction.
+
+Because we must assume that the clock cycle is equal to the worst-case delay for all instruction, the clock period is high and we **fail to make the common case fast**, as the instruction requiring the most delay may not occur frequently.
+
+We want to pipeline the CPU by sharing the same hardware across different instructions at one time. This increases the CPI but decreases the clock period.
+
+![Figure17](./images/Figure17.png)
+
+Pipelining increases the number of simultaneously executing instructions and the rate at which instructions are started and completed. Pipelining does not reduce the time it takes to complete an individual instruction.
+
+### Hazards
+
+* **Structural Hazard**: when a planned instruction cannot execute in the proper clock cycle because the hardware does not support the combination of instructions that are set to execute. EX: If our instruction memory and data memory are not separate, the first instruction in the pipeline will access data while the fourth instruction will try to fetch an instruction.
+* **Data Hazard**: When a pllaned instruction cannot execute in the proper clock cycle because data that are needed to execute the instruction are not yet available. 
+EX: dependency on x19
+```
+add x19, x0, x1
+sub x2, x19, x3
+```
+To resolve this, we could add extra hardware to send the ALU result directly to the 2nd stage. This is called **forwarding**
+
+However, forwarding cannot prevent the load-data hazard where data is being loaded after the 4th stage, but the next instruction may need it in the 3nd stage.
+
+![Figure18](./images/Figure18.png)
+
+* **Control Hazard**: when the proper instruction cannot execute in the proper pipeline clock cycle because the instruction that was fetched is not the one that is needed.
