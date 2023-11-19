@@ -106,3 +106,6 @@ However, forwarding cannot prevent the load-data hazard where data is being load
 ![Figure18](./images/Figure18.png)
 
 * **Control Hazard**: when the proper instruction cannot execute in the proper pipeline clock cycle because the instruction that was fetched is not the one that is needed.
+
+### Pipelined Datapath
+![Figure19](./images/Figure19.png)
