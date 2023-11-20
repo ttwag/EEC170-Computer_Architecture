@@ -118,3 +118,20 @@ We need pipeline register to synchronize each stage and give stable input to the
 ![Figure20](./images/Figure20.png)
 
 Suppose we don't have these registers and try to pipeline with a 200 ps clock period for each state, then the signal from one stage could propagate to the next stage before the 200 ps period ends, which disrupts the pipeline. The registers ensure the value at each state changes according to the clock.
+
+### Forwarding and Hazard Detection
+We need to forward the result from ALU or memory stage when we have a read access for a register that's the destination register of the last instruction.
+
+The hazard detection unit detects the case when we read a register that's the destination register of a load instruction; the load instruction causes a problem when it's the previous instruction.
+
+![Figure21](./images/Figure21.png)
+
+### Exercise
+
+![Figure22](./images/Figure22.png)
+
+![Figure23](./images/Figure23.png)
+
+![Figure24](./images/Figure24.png)
+
+![Figure25](./images/Figure25.png)
