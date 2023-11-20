@@ -108,4 +108,13 @@ However, forwarding cannot prevent the load-data hazard where data is being load
 * **Control Hazard**: when the proper instruction cannot execute in the proper pipeline clock cycle because the instruction that was fetched is not the one that is needed.
 
 ### Pipelined Datapath
+
+#### Without Control
 ![Figure19](./images/Figure19.png)
+
+We need pipeline register to synchronize each stage and give stable input to the combinational logic. 
+
+#### With Control
+![Figure20](./images/Figure20.png)
+
+Suppose we don't have these registers and try to pipeline with a 200 ps clock period for each state, then the signal from one stage could propagate to the next stage before the 200 ps period ends, which disrupts the pipeline. The registers ensure the value at each state changes according to the clock.
