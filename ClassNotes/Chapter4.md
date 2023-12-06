@@ -63,7 +63,7 @@ The branch instruction operates by adding the PC with the 12 bits of the instruc
 **Control Unit**
 ![Figure13](./images/Figure13.png)
 
-## Exercise
+### Exercise
 ![Figure14](./images/Figure14.png)
 
 ### Data Path
@@ -126,7 +126,7 @@ The hazard detection unit detects the case when we read a register that's the de
 
 ![Figure21](./images/Figure21.png)
 
-### Exercise
+#### Exercise
 
 ![Figure22](./images/Figure22.png)
 
