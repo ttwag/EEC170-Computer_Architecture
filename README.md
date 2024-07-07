@@ -3,6 +3,9 @@
 This course gives students a high-level overview of how a simple computer works.
 We will first study the **RISC-V instruction set**, which is a low-level assembly language that can be directly translated into machine code for the processor to execute and accomplish some tasks. Next, we will remove the abstraction on the processor and look at the digital circuit inside that accomplishes the processor's functionality. Lastly, we'll examine the memory system that allows the computer to grab the data and store the processed result.
 
+![old_computer](https://github.com/ttwag/EEC170-Computer_Architecture/assets/113254272/53668e52-6ca7-4d40-a97a-dbd08a8a8022)
+
+
 ## Course Content
 ### Lecture
 * [Chapter 1 - Introduction to the Instruction Set](./lecture/Chapter1.md)
