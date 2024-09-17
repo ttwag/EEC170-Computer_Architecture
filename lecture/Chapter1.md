@@ -139,7 +139,7 @@ sw x21, 48(x22)     // Stores the numbers back into A[12]
 ### Signed and Unsigned Numbers
 We'll use **Two's Complement**.
 Given an n-bit number, 
-$$ x = -x_{n-1} 2^{n-1} + x_{n-2}2^{n-2}+...+x_12^{1}+x_02^{0}$$
+$$x = -x_{n-1} 2^{n-1} + x_{n-2}2^{n-2}+...+x_12^{1}+x_02^{0}$$
 If the most significant bit is 0, the number is positive. Otherwise, it's negative. **The number overflows if it doesn't match this pattern.**
 
 To go from a positive number x to its negative counterpart, negate x bit-by-bit and add 1. This comes from the fact that a binary with all 1's in two's complement is -1, so $$x + \bar{x} = -1$$ and $$\bar{x} + 1 = -x$$
